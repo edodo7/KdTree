@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Window {
 
     public static ArrayList<Point> requestTree(KdTree tree,float[] range){
-        return requestTree(tree,range,new float[]{Float.MIN_VALUE,Float.MAX_VALUE,Float.MIN_VALUE,Float.MAX_VALUE});
+        return requestTree(tree,range,new float[]{Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY,Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY});
     }
 
     private static ArrayList<Point> requestTree(KdTree tree ,float[] range, float[] region){
@@ -72,7 +72,7 @@ public class Window {
 
     public static void main(String[] args) {
         KdTree tree = new KdTree(new File("src/data/test.txt"));
-        for(Point point : Window.requestTree(tree,new float[]{20f,30f,2000f,3000f})){
+        for(Point point : Window.requestTree(tree,new float[]{20f,30f,1200f,Float.POSITIVE_INFINITY})){
             System.out.println("age : " + point.getX() + " revenus : " + point.getY());
         }
     }
