@@ -1,8 +1,7 @@
+package model;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class KdTree {
     private static String firstCriteriaName = "";
@@ -29,7 +28,7 @@ public class KdTree {
         right = new KdTree(new ArrayList<>(points.subList(medianIndex + 1,size)),1);
     }
 
-    private KdTree(ArrayList<Point> points,int depth){
+    private KdTree(ArrayList<Point> points, int depth){
         findMinsandMaxs(points);
         size = points.size();
         if (size == 1){
@@ -89,28 +88,32 @@ public class KdTree {
     }
 
     private void findMinsandMaxs(ArrayList<Point> points){
-        float minX = points.get(0).getX();
-        float maxX = points.get(0).getX();
-        float minY = points.get(0).getY();
-        float maxY = points.get(0).getY();
-        for(Point point : points){
-            if(point.getX() < minX)
-                minX = point.getX();
-            if (point.getX() > maxX)
-                maxX = point.getX();
-            if(point.getY() < minY)
-                minY = point.getY();
-            if (point.getY() > maxY)
-                maxY = point.getY();
-        }
-        this.minX = minX;
-        this.maxX = maxX;
-        this.minY = minY;
-        this.maxY = maxY;
+        Comparator<Point> comparingX = new SortingUsingXCoordinate();
+        Comparator<Point> comparingY = new SortingUsingYCoordinate();
+        this.minX = Collections.min(points,comparingX).getX();
+        this.maxX = Collections.max(points,comparingX).getX();
+        this.minY = Collections.min(points,comparingY).getY();;
+        this.maxY = Collections.max(points,comparingY).getY();
     }
     public static String getFirstCriteriaName() { return firstCriteriaName; }
 
     public static String getSecondCriteriaName() { return secondCriteriaName; }
+
+    public float getMaxX() { return maxX; }
+
+    public float getMinX() { return minX; }
+
+    public float getMaxY() { return maxY; }
+
+    public float getMinY() { return minY; }
+
+    public int getSize() { return size; }
+
+    public KdTree getLeft() { return left; }
+
+    public KdTree getRight() { return right; }
+
+    public float getMedian() { return median; }
 
     public static void setFirstCriteriaName(String firstCriteriaName) {
         KdTree.firstCriteriaName = firstCriteriaName;
@@ -120,7 +123,7 @@ public class KdTree {
         KdTree.secondCriteriaName = secondCriteriaName;
     }
 
-    private enum Line {HORIZONTAL, VERTICAL};
+    private enum Line {HORIZONTAL, VERTICAL}
 
     private static class SortingUsingYCoordinate implements Comparator<Point> {
         @Override
@@ -135,6 +138,4 @@ public class KdTree {
             return Float.compare(firstPoint.getX(),secondPoint.getX());
         }
     }
-
-
 }
