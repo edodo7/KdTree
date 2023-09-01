@@ -7,6 +7,7 @@ public class KdTree {
     private static String firstCriteriaName = "";
     private static String secondCriteriaName = "";
     private int size;
+    public enum Line {HORIZONTAL, VERTICAL}
     private Line line;
     private float median;
     private Point point;
@@ -19,7 +20,7 @@ public class KdTree {
 
     public KdTree(File file){
         ArrayList<Point> points = parseFile(file);
-        findMinsandMaxs(points);
+        findMinsAndMaxs(points);
         line = Line.VERTICAL;
         points.sort(new SortingUsingXCoordinate());
         int medianIndex = getMedianIndex(size);
@@ -29,27 +30,27 @@ public class KdTree {
     }
 
     private KdTree(ArrayList<Point> points, int depth){
-        findMinsandMaxs(points);
+        findMinsAndMaxs(points);
         size = points.size();
-        if (size == 1){
-            this.point = points.get(0);
+        int medianIndex;
+        if (depth % 2 == 0){
+            line = Line.VERTICAL;
+            points.sort(new SortingUsingXCoordinate());
+            medianIndex = getMedianIndex(size);
+            median = points.get(medianIndex).getX();
         }
         else{
-            int medianIndex;
-            if (depth % 2 == 0){
-                line = Line.VERTICAL;
-                points.sort(new SortingUsingXCoordinate());
-                medianIndex = getMedianIndex(size);
-                median = points.get(medianIndex).getX();
-            }
-            else{
-                line = Line.HORIZONTAL;
-                points.sort(new SortingUsingYCoordinate());
-                medianIndex = getMedianIndex(size);
-                median = points.get(medianIndex).getY();
-            }
+            line = Line.HORIZONTAL;
+            points.sort(new SortingUsingYCoordinate());
+            medianIndex = getMedianIndex(size);
+            median = points.get(medianIndex).getY();
+        }
+        if(size != 1) {
             left = new KdTree(new ArrayList<>(points.subList(0,medianIndex + 1)),depth + 1);
             right = new KdTree(new ArrayList<>(points.subList(medianIndex + 1,size)),depth + 1);
+        }
+        else{
+            point = points.get(0);
         }
     }
 
@@ -83,11 +84,9 @@ public class KdTree {
             index -= 1;
         return index;
     }
-    public boolean isLeaf(){
-        return left == null && right == null;
-    }
+    public boolean isLeaf(){ return left == null && right == null; }
 
-    private void findMinsandMaxs(ArrayList<Point> points){
+    private void findMinsAndMaxs(ArrayList<Point> points){
         Comparator<Point> comparingX = new SortingUsingXCoordinate();
         Comparator<Point> comparingY = new SortingUsingYCoordinate();
         this.minX = Collections.min(points,comparingX).getX();
@@ -115,6 +114,10 @@ public class KdTree {
 
     public float getMedian() { return median; }
 
+    public Line getLine() { return line; }
+
+    public Point getPoint() { return point; }
+
     public static void setFirstCriteriaName(String firstCriteriaName) {
         KdTree.firstCriteriaName = firstCriteriaName;
     }
@@ -122,8 +125,6 @@ public class KdTree {
     public static void setSecondCriteriaName(String secondCriteriaName) {
         KdTree.secondCriteriaName = secondCriteriaName;
     }
-
-    private enum Line {HORIZONTAL, VERTICAL}
 
     private static class SortingUsingYCoordinate implements Comparator<Point> {
         @Override

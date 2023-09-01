@@ -75,7 +75,16 @@ class KdTreeTest {
     }
 
     @org.junit.jupiter.api.Test
-    void isLeaf(){
+    void getLine(){
+        assertSame(tree.getLine(), KdTree.Line.VERTICAL);
+        assertSame(tree.getLeft().getLine(), KdTree.Line.HORIZONTAL);
+        assertSame(tree.getRight().getLine(), KdTree.Line.HORIZONTAL);
+        assertSame(tree.getLeft().getLeft().getLine(), KdTree.Line.VERTICAL);
+        assertSame(tree.getRight().getLeft().getLine(), KdTree.Line.VERTICAL);
+    }
+
+    @org.junit.jupiter.api.Test
+    void isLeaf() {
         assertTrue(tree.getLeft().getRight().isLeaf());
         assertFalse(tree.getLeft().getLeft().isLeaf());
         assertTrue(tree.getLeft().getLeft().getLeft().isLeaf());
