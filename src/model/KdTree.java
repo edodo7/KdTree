@@ -84,7 +84,7 @@ public class KdTree {
             index -= 1;
         return index;
     }
-    public boolean isLeaf(){ return left == null && right == null; }
+    public boolean isLeaf() { return left == null && right == null; }
 
     private void findMinsAndMaxs(ArrayList<Point> points){
         Comparator<Point> comparingX = new SortingUsingXCoordinate();
