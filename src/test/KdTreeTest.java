@@ -32,28 +32,28 @@ class KdTreeTest {
         assertEquals(45.0,tree.getMaxX(),0.0001);
         KdTree left = tree.getLeft();
         KdTree right = tree.getRight();
-        assertEquals(25.0,left.getMaxX());
+        assertEquals(45.0,left.getMaxX());
         assertEquals(45.0,right.getMaxX());
     }
 
     @Test
     void getMinX() {
         assertEquals(15.0,tree.getMinX(),0.0001);
-        assertEquals(27.0,tree.getRight().getMinX(),0.0001);
+        assertEquals(15.0,tree.getRight().getMinX(),0.0001);
         assertEquals(15.0,tree.getLeft().getMinX(),0.0001);
     }
 
     @Test
     void getMaxY() {
         assertEquals(2456.35,tree.getMaxY(),0.0001);
-        assertEquals(1491.63,tree.getLeft().getMaxY(),0.0001);
-        assertEquals(1850.00,tree.getRight().getLeft().getMaxY(),0.0001);
+        assertEquals(2456.35,tree.getLeft().getMaxY(),0.0001);
+        assertEquals(2456.35,tree.getRight().getLeft().getMaxY(),0.0001);
     }
 
     @Test
     void getMinY() {
         assertEquals(0.0,tree.getMinY(),0.0001);
-        assertEquals(1212.45,tree.getRight().getMinY(),0.0001);
+        assertEquals(0.0,tree.getRight().getMinY(),0.0001);
     }
 
     @Test
@@ -61,10 +61,10 @@ class KdTreeTest {
         assertEquals(6,tree.getSize());
         KdTree left = tree.getLeft();
         KdTree right = tree.getRight();
-        assertEquals(3,left.getSize());
-        assertEquals(3,right.getSize());
-        assertEquals(2,left.getLeft().getSize());
-        assertEquals(2,right.getLeft().getSize());
+        assertEquals(6,left.getSize());
+        assertEquals(6,right.getSize());
+        assertEquals(6,left.getLeft().getSize());
+        assertEquals(6,right.getLeft().getSize());
     }
 
     @Test

@@ -6,20 +6,21 @@ import java.util.*;
 public class KdTree {
     private static String firstCriteriaName = "";
     private static String secondCriteriaName = "";
-    private int size;
+    private static int size;
     public enum Line {HORIZONTAL, VERTICAL}
     private Line line;
     private float median;
     private Point point;
     private KdTree left;
     private KdTree right;
-    private float minX;
-    private float maxX;
-    private float minY;
-    private float maxY;
+    private static float minX;
+    private static float maxX;
+    private static float minY;
+    private static float maxY;
 
     public KdTree(File file){
         ArrayList<Point> points = parseFile(file);
+        int size = points.size();
         findMinsAndMaxs(points);
         line = Line.VERTICAL;
         points.sort(new SortingUsingXCoordinate());
@@ -30,8 +31,7 @@ public class KdTree {
     }
 
     private KdTree(ArrayList<Point> points, int depth){
-        findMinsAndMaxs(points);
-        size = points.size();
+        int size = points.size();
         int medianIndex;
         if (depth % 2 == 0){
             line = Line.VERTICAL;
@@ -87,12 +87,24 @@ public class KdTree {
     public boolean isLeaf() { return left == null && right == null; }
 
     private void findMinsAndMaxs(ArrayList<Point> points){
-        Comparator<Point> comparingX = new SortingUsingXCoordinate();
-        Comparator<Point> comparingY = new SortingUsingYCoordinate();
-        this.minX = Collections.min(points,comparingX).getX();
-        this.maxX = Collections.max(points,comparingX).getX();
-        this.minY = Collections.min(points,comparingY).getY();;
-        this.maxY = Collections.max(points,comparingY).getY();
+        float minX = Float.POSITIVE_INFINITY;
+        float maxX = Float.NEGATIVE_INFINITY;
+        float minY = Float.POSITIVE_INFINITY;
+        float maxY = Float.NEGATIVE_INFINITY;
+        for(Point point : points){
+            if (point.getX() < minX)
+                minX = point.getX();
+            if (point.getX() > maxX)
+                maxX = point.getX();
+            if (point.getY() < minY)
+                minY = point.getY();
+            if (point.getY() > maxY)
+                maxY = point.getY();
+        }
+        KdTree.minX = minX;
+        KdTree.maxX = maxX;
+        KdTree.minY = minY;
+        KdTree.maxY = maxY;
     }
     public static String getFirstCriteriaName() { return firstCriteriaName; }
 
