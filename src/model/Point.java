@@ -16,4 +16,15 @@ public class Point {
                y >= range[2] && y <= range[3];
     }
 
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof Point otherPoint)){
+            return false;
+        }
+        else{
+            float EPSILON = 0.0001f;
+            return Math.abs(x - otherPoint.getX()) <= EPSILON && Math.abs(y - otherPoint.getY()) <= EPSILON;
+        }
+    }
+
 }
