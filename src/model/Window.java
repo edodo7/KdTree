@@ -71,9 +71,13 @@ public class Window {
     }
 
     public static void main(String[] args) {
-        KdTree tree = new KdTree(new File("src/data/dataset.txt"));
-        for(Point point : Window.requestTree(tree,new float[]{15f,20f,Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY})){
+        KdTree tree = new KdTree(new File("src/data/addTest.txt"));
+        System.out.println(tree.getMaxX());
+        tree.add(new Point(10,4));
+        System.out.println(tree.getMaxX());
+        TreePrinter.print(tree);
+    /**    for(Point point : Window.requestTree(tree,new float[]{15f,20f,Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY})){
             System.out.println("age : " + point.getX() + " revenus : " + point.getY());
-        }
+        } **/
     }
 }

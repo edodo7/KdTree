@@ -3,7 +3,9 @@ package model;
 import java.io.File;
 import java.util.*;
 
-public class KdTree {
+import static model.TreePrinter.*;
+
+public class KdTree implements PrintableNode {
     private static String firstCriteriaName = "";
     private static String secondCriteriaName = "";
     private static int size;
@@ -51,6 +53,52 @@ public class KdTree {
         }
         else{
             point = points.get(0);
+        }
+    }
+
+    private KdTree(Point point,int depth){
+        this.point = point;
+        line = (depth % 2 == 0) ? Line.VERTICAL : Line.HORIZONTAL;
+    }
+
+    public void add(Point element){
+        if(isLeaf()){
+            maxX = Math.max(maxX,element.getX());
+            minX = Math.min(minX,element.getX());
+            maxY = Math.max(maxY, element.getY());
+            minY = Math.min(minY, element.getY());
+            size++;
+            Point minimum;
+            Point maximum;
+            if (line == Line.VERTICAL){
+                minimum = element.getX() < point.getX() ? element : point;
+                maximum = element.getX() > point.getX() ? element : point;
+                median = minimum.getX();
+                left = new KdTree(minimum,1);
+                right = new KdTree(maximum,1);
+            }
+            else{
+                minimum = element.getY() < point.getY() ? element : point;
+                maximum = element.getY() > point.getY() ? element : point;
+                median = minimum.getY();
+                left = new KdTree(minimum,2);
+                right = new KdTree(maximum,2);
+            }
+            point = null;
+        }
+        else{
+            if(line == Line.VERTICAL){
+                if(element.getX() > median)
+                    right.add(element);
+                else
+                    left.add(element);
+            }
+            else {
+                if(element.getY() > median)
+                    right.add(element);
+                else
+                    left.add(element);
+            }
         }
     }
 
@@ -129,6 +177,21 @@ public class KdTree {
     public Line getLine() { return line; }
 
     public Point getPoint() { return point; }
+
+    @Override
+    public String getText(){
+        if(isLeaf()){
+            return point.toString();
+        }
+        else {
+            String res;
+            if (line == Line.VERTICAL)
+                res = "mid x : " + median;
+            else
+                res = "mid y : " + median;
+            return res;
+        }
+    }
 
     public static void setFirstCriteriaName(String firstCriteriaName) {
         KdTree.firstCriteriaName = firstCriteriaName;
