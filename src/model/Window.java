@@ -76,7 +76,7 @@ public class Window {
         tree.add(new Point(10,4));
         System.out.println(tree.getMaxX());
         TreePrinter.print(tree);
-    /**    for(Point point : Window.requestTree(tree,new float[]{15f,20f,Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY})){
+    /*    for(Point point : Window.requestTree(tree,new float[]{15f,20f,Float.NEGATIVE_INFINITY,Float.POSITIVE_INFINITY})){
             System.out.println("age : " + point.getX() + " revenus : " + point.getY());
         } **/
     }

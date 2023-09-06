@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static model.TreePrinter.*;
 
@@ -122,7 +124,8 @@ public class KdTree implements PrintableNode {
             scan.close();
         }
         catch(Exception e){
-            e.printStackTrace();
+            Logger logger = Logger.getAnonymousLogger();
+            logger.log(Level.WARNING,e.getMessage(),e);
         }
         return points;
     }
@@ -135,24 +138,14 @@ public class KdTree implements PrintableNode {
     public boolean isLeaf() { return left == null && right == null; }
 
     private void findMinsAndMaxs(ArrayList<Point> points){
-        float minX = Float.POSITIVE_INFINITY;
-        float maxX = Float.NEGATIVE_INFINITY;
-        float minY = Float.POSITIVE_INFINITY;
-        float maxY = Float.NEGATIVE_INFINITY;
+        minX = minY = Float.POSITIVE_INFINITY;
+        maxX = maxY = Float.NEGATIVE_INFINITY;
         for(Point point : points){
-            if (point.getX() < minX)
-                minX = point.getX();
-            if (point.getX() > maxX)
-                maxX = point.getX();
-            if (point.getY() < minY)
-                minY = point.getY();
-            if (point.getY() > maxY)
-                maxY = point.getY();
+            minX = Math.min(minX,point.getX());
+            maxX = Math.max(maxX,point.getX());
+            minY = Math.min(minY,point.getY());
+            maxY = Math.max(maxY,point.getY());
         }
-        KdTree.minX = minX;
-        KdTree.maxX = maxX;
-        KdTree.minY = minY;
-        KdTree.maxY = maxY;
     }
     public static String getFirstCriteriaName() { return firstCriteriaName; }
 
